@@ -1,0 +1,36 @@
+<!-- // An API is simply just a way to call another service!
+When you type in an address into your web browser, your computer makes a
+request to the address you've given, and receives back the HTML, CSS, and
+JavaScript needed to render a page
+I have to specify with code what to do with the data! -->
+
+
+<html>
+  <title>Final Project</title>
+   <h1>Website Demo</h1>
+   <body>
+    <br>URL must be absolute ex. https://example.com/auth/callback for LinkedIn </br>
+     <br>URL arguments are ignored, and URL can't have a # </br>
+     Need a client id!
+     GET https://www.linkedin.com/oauth/v2/authorization
+    <br> https://www.linkedin.com/oauth/v2/accessToken STEP 3 </br>
+     POST /oauth/v2/accessToken HTTP/1.1
+Host: www.linkedin.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code&code={authorization_code_from_step2_response}&redirect_uri=hhttps%3A%2F%2Fdev.example.com%2Fauth%2Flinkedin%2Fcallback&client_id={your_client_id}&client_secret={your_client_secret}
+
+<br> Facebook API documentation https://developers.facebook.com/docs/accountkit/webbasic</br>
+<br> Youtube API documentation https://developers.google.com/youtube/v3/code_samples/java</br>
+
+
+  <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+<link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+  <!-- //usually everything requires an API key  -->
+
+
+
+   </body>
+
+
+   </html>
