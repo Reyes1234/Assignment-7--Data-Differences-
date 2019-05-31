@@ -9,26 +9,115 @@ I have to specify with code what to do with the data! -->
   <title>Final Project</title>
    <h1>Website Demo</h1>
    <body>
-    <br>URL must be absolute ex. https://example.com/auth/callback for LinkedIn </br>
-     <br>URL arguments are ignored, and URL can't have a # </br>
-     Need a client id!
-     GET https://www.linkedin.com/oauth/v2/authorization
-    <br> https://www.linkedin.com/oauth/v2/accessToken STEP 3 </br>
-     POST /oauth/v2/accessToken HTTP/1.1
-Host: www.linkedin.com
-Content-Type: application/x-www-form-urlencoded
 
-grant_type=authorization_code&code={authorization_code_from_step2_response}&redirect_uri=hhttps%3A%2F%2Fdev.example.com%2Fauth%2Flinkedin%2Fcallback&client_id={your_client_id}&client_secret={your_client_secret}
-
+<br> LinkedIn API documentation https://developer.linkedin.com/docs/rest-api</br>
 <br> Facebook API documentation https://developers.facebook.com/docs/accountkit/webbasic</br>
 <br> Youtube API documentation https://developers.google.com/youtube/v3/code_samples/java</br>
+<br> Unsplah API documentation https://unsplash.com/documentation</br>
+<br> I will use the API from LinkedIn, Facebook, YouTube, and Unsplash to connect with my website.</br>
+<br> I want several elements in my website to make a rich experience for my users.
+The website is catered only to musicans and music professionals. The purpose of LinkedIn API is for users to be able to network.
+The purpose of Facebook is for users to be able to share content they find interesting with other users. The purpose of YouTube is for users to be able to view videos.
+Lastly the purpose of Unsplash is for users to be inspired by beautiful photographs about musicianship and careers as a musician.</br>
 
+<sript>
+  <div class="fb-post" data-href="https://www.facebook.com/groups/independentmusicscene/" data-width="500" data-show-text="true"><blockquote cite="https://developers.facebook.com/20531316728/posts/10154009990506729/" class="fb-xfbml-parse-ignore">Posted by <a href="https://www.facebook.com/facebook/">Facebook</a> on&nbsp;<a href="https://developers.facebook.com/20531316728/posts/10154009990506729/">Thursday, August 27, 2015</a></blockquote></div>
+<!-- It works just needs to be updated for usable information according to users.
+   -->
+   <script type="text/javascript" src="//platform.linkedin.com/in.js">
+       api_key:   [API_KEY]
+       onLoad:    [ONLOAD]
+       authorize: [AUTHORIZE]
+       lang:      [LANG_LOCALE]
+   </script>
 
-  <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
-<link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
-  <!-- //usually everything requires an API key  -->
+<script>
+   package main
 
+import (
+        "flag"
+        "fmt"
+        "log"
+        "os"
+        "strings"
 
+        "google.golang.org/api/youtube/v3"
+)
+
+var (
+        filename    = flag.String("filename", "", "Name of video file to upload")
+        title       = flag.String("title", "Test Title", "Video title")
+        description = flag.String("description", "Test Description", "Video description")
+        category    = flag.String("category", "22", "Video category")
+        keywords    = flag.String("keywords", "", "Comma separated list of video keywords")
+        privacy     = flag.String("privacy", "unlisted", "Video privacy status")
+)
+
+func main() {
+        flag.Parse()
+
+        if *filename == "" {
+                log.Fatalf("You must provide a filename of a video file to upload")
+        }
+
+        client := getClient(youtube.YoutubeUploadScope)
+
+        service, err := youtube.New(client)
+        if err != nil {
+                log.Fatalf("Error creating YouTube client: %v", err)
+        }
+
+        upload := &youtube.Video{
+                Snippet: &youtube.VideoSnippet{
+                        Title:       *title,
+                        Description: *description,
+                        CategoryId:  *category,
+                },
+                Status: &youtube.VideoStatus{PrivacyStatus: *privacy},
+        }
+
+        // The API returns a 400 Bad Request response if tags is an empty string.
+        if strings.Trim(*keywords, "") != "" {
+                upload.Snippet.Tags = strings.Split(*keywords, ",")
+        }
+
+        call := service.Videos.Insert("snippet,status", upload)
+
+        file, err := os.Open(*filename)
+        defer file.Close()
+        if err != nil {
+                log.Fatalf("Error opening %v: %v", *filename, err)
+        }
+
+        response, err := call.Media(file).Do()
+        handleError(err, "")
+        fmt.Printf("Upload successful! Video ID: %v\n", response.Id)
+}
+upload_video.go
+</script>
+
+<script>
+  {
+  "id": 206,
+  "title": "Makers: Cat and Ben",
+  "description": "Behind-the-scenes photos from the Makers interview with designers Cat Noone and Benedikt Lehnert.",
+  "published_at": "2016-01-12T18:16:09-05:00",
+  "updated_at": "2016-07-10T11:00:01-05:00",
+  "curated": false,
+  "featured": false,
+  "total_photos": 12,
+  "private": false,
+  "share_key": "312d188df257b957f8b86d2ce20e4766",
+  "cover_photo": null,
+  "user": null,
+  "links": {
+    "self": "https://api.unsplash.com/collections/206",
+    "html": "https://unsplash.com/collections/206/makers-cat-and-ben",
+    "photos": "https://api.unsplash.com/collections/206/photos"
+  }
+}
+</script>
+<!-- //tokens need to be updated  -->
 
    </body>
 
